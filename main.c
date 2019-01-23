@@ -17,12 +17,16 @@ void PortF_Init(void) {
 
 uint32_t SW1; // SW1 is PF4, located at bottom left corner, SW1 is HIGH when switch is NOT pressed
 uint32_t Out; // outputs to PF3,PF2,PF1 (multicolor LED)
+uint32_t SW2; // SW2 is PF0, located at bottom right corner
 
 int main(void)
 {
     PortF_Init();
+    GPIO_PORTF_DATA_R = 0x00; // keep all the LEDs off and wait until SW1 is pressed
+    SW1 = GPIO_PORTF_DATA_R & 0x10; // read PF4 into SW1
+    SW2 = GPIO_PORTF_DATA_R & 0x01; // read PF0 into SW2
     while (1) {
-        SW1 = GPIO_PORTF_DATA_R & 0x10; // read PF4 into SW1
+
         SW1 = SW1 >> 2; // 0x10 >> 2 = 0x04
         Out = GPIO_PORTF_DATA_R;
         Out = Out & 0xF1;
@@ -31,3 +35,9 @@ int main(void)
     }
 	return 0;
 }
+
+// Color    LED(s) PortF
+// dark     ---    0
+// red      R--    0x02
+// blue     --B    0x04
+// green    -G-    0x08
