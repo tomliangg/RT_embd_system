@@ -15,7 +15,7 @@ void PortF_Init(void) {
     GPIO_PORTF_DEN_R = 0x1F; // enable digital pins PF4-PF0
 }
 
-uint32_t SW1; // SW1 is PF4, located at bottom left corner
+uint32_t SW1; // SW1 is PF4, located at bottom left corner, SW1 is HIGH when switch is NOT pressed
 uint32_t Out; // outputs to PF3,PF2,PF1 (multicolor LED)
 
 int main(void)
@@ -23,7 +23,7 @@ int main(void)
     PortF_Init();
     while (1) {
         SW1 = GPIO_PORTF_DATA_R & 0x10; // read PF4 into SW1
-        SW1 = SW1 >> 2;
+        SW1 = SW1 >> 2; // 0x10 >> 2 = 0x04
         Out = GPIO_PORTF_DATA_R;
         Out = Out & 0xF1;
         Out = Out | SW1;
