@@ -1,7 +1,7 @@
 ******************************************************************************
                   TI ARM Linker PC v18.1.4                     
 ******************************************************************************
->> Linked Tue Jan 22 21:09:52 2019
+>> Linked Tue Jan 22 21:59:16 2019
 
 OUTPUT FILE NAME:   <MSE450.out>
 ENTRY POINT SYMBOL: "_c_int00_noargs"  address: 00000375
@@ -54,8 +54,8 @@ section   page    origin      length       input sections
 *          0    00000000    00000000     UNINITIALIZED
 
 .bss       0    20000200    00000008     UNINITIALIZED
-                  20000200    00000004     (.common:In)
-                  20000204    00000004     (.common:Out)
+                  20000200    00000004     (.common:Out)
+                  20000204    00000004     (.common:SW1)
 
 .stack     0    20000000    00000200     UNINITIALIZED
                   20000000    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : boot_cortex_m.c.obj (.stack)
@@ -103,10 +103,10 @@ GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name
 address   name                          
 -------   ----                          
 000003cf  C$$EXIT                       
-20000200  In                            
-20000204  Out                           
+20000200  Out                           
 0000026d  PortF_Init                    
 000003bf  ResetISR                      
+20000204  SW1                           
 20000200  __STACK_END                   
 00000200  __STACK_SIZE                  
 20000200  __STACK_TOP                   
@@ -154,10 +154,10 @@ address   name
 000003e4  __TI_Handler_Table_Limit      
 000003ec  __TI_CINIT_Limit              
 20000000  __stack                       
-20000200  In                            
+20000200  Out                           
 20000200  __STACK_END                   
 20000200  __STACK_TOP                   
-20000204  Out                           
+20000204  SW1                           
 ffffffff  __TI_pprof_out_hndl           
 ffffffff  __TI_prof_data_size           
 ffffffff  __TI_prof_data_start          
