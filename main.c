@@ -52,14 +52,17 @@ int main(void)
             GPIO_PORTF_DATA_R &= 0x11; // clear color
             GPIO_PORTF_DATA_R |= 0x02; // red
             MSDealy(800);
-            if (!SW2) state = 0;
+            SW2 = GPIO_PORTF_DATA_R & 0x01; // update SW2 value
+	    if (!SW2) state = 0;
             GPIO_PORTF_DATA_R &= 0x11; // clear color
             GPIO_PORTF_DATA_R |= 0x04; // blue
             MSDealy(800);
+	    SW2 = GPIO_PORTF_DATA_R & 0x01; // update SW2 value
             if (!SW2) state = 0;
             GPIO_PORTF_DATA_R &= 0x11; // clear color
             GPIO_PORTF_DATA_R |= 0x08; // green
             MSDealy(800);
+	    SW2 = GPIO_PORTF_DATA_R & 0x01; // update SW2 value
             if (!SW2) state = 0;
         }
     }
