@@ -44,26 +44,26 @@ int main(void)
     while (1) {
         SW1 = GPIO_PORTF_DATA_R & 0x10; // read PF4 into SW1 and keep the values updated
         SW2 = GPIO_PORTF_DATA_R & 0x01; // read PF0 into SW2 and keep the values updated
+        if (!SW1) state = 1;
+        else if (!SW2) state = 0;
+
         if (state == 0) {
             GPIO_PORTF_DATA_R = 0x00; // keep all the LEDs off and wait until SW1 is pressed
-            if (!SW1) state = 1;
         }
         else if (state == 1) {
             GPIO_PORTF_DATA_R &= 0x11; // clear color
             GPIO_PORTF_DATA_R |= 0x02; // red
             MSDealy(800);
             SW2 = GPIO_PORTF_DATA_R & 0x01; // update SW2 value
-	    if (!SW2) state = 0;
+            if (!SW2) state = 0;
             GPIO_PORTF_DATA_R &= 0x11; // clear color
             GPIO_PORTF_DATA_R |= 0x04; // blue
             MSDealy(800);
-	    SW2 = GPIO_PORTF_DATA_R & 0x01; // update SW2 value
+            SW2 = GPIO_PORTF_DATA_R & 0x01; // update SW2 value
             if (!SW2) state = 0;
             GPIO_PORTF_DATA_R &= 0x11; // clear color
             GPIO_PORTF_DATA_R |= 0x08; // green
             MSDealy(800);
-	    SW2 = GPIO_PORTF_DATA_R & 0x01; // update SW2 value
-            if (!SW2) state = 0;
         }
     }
 	return 0;
