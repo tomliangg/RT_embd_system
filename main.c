@@ -72,10 +72,10 @@ void SysTick_Handler(void){
 
     if (count == (TOGGLE_COUNT-1)) {
         count = 0;
-        // toggle bit at PF2
-        Out = GPIO_PORTF_DATA_R & 0x04; // read PF2 to out 0000 0100
-        Out |= 0xFB;
-        GPIO_PORTF_DATA_R = ~Out; //toggle PF2
+
+        Out = GPIO_PORTF_DATA_R & 0x04; // read PF2 to Out
+        Out ^= 0x04; // toggle bit at PF2
+        GPIO_PORTF_DATA_R = Out;
 
     }
 }
