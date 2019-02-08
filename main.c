@@ -1,3 +1,9 @@
+/*
+ * Author: Tom Liang
+ * Date: Feb 7, 2019
+ * Objective: configure interrupt and use SysTick_Handler() to blink up the blue LED
+ */
+
 #include "SysTickInts.h"
 #include "PLL.h"
 #include "tm4c123gh6pm.h"
