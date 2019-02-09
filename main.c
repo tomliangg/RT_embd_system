@@ -1,7 +1,9 @@
 /*
  * Author: Tom Liang
- * Date: Feb 7, 2019
- * Objective: configure interrupt and use SysTick_Handler() to blink up the blue LED
+ * Date: Feb 8, 2019
+ * Objective: configure GPIO interrupt and SysTick interrupt.
+ * Use SysTick_Handler() to blink the blue LED when SW1 is released.
+ * When SW1 is pressed, GPIO handler should light up the red LED.
  */
 
 #include "SysTickInts.h"
@@ -9,6 +11,11 @@
 #include "tm4c123gh6pm.h"
 #include <stdint.h>
 #include <stdbool.h>
+#include "inc/hw_memmap.h"
+#include "driverlib/interrupt.h"
+#include "driverlib/gpio.h"
+#include "driverlib/sysctl.h"
+
 
 void PortF_Init(void);
 void disable_interrupts(void);
@@ -17,7 +24,36 @@ void wait_for_interrupts(void);
 
 volatile unsigned long count = 0;
 volatile unsigned long In, Out;
-unsigned long TOGGLE_COUNT = 1000 / 2;
+unsigned long TOGGLE_COUNT = 1000;
+void SysTick_Handler(void);
+
+void onButtonDown(void);
+void onButtonUp(void);
+
+void onButtonDown(void) {
+    if (GPIOIntStatus(GPIO_PORTF_BASE, false) & GPIO_PIN_4) {
+        // PF4 was interrupt cause
+        In = GPIO_PORTF_DATA_R & 0x10;
+        while (!In) {
+            GPIO_PORTF_DATA_R = 0x02;
+            In = GPIO_PORTF_DATA_R & 0x10;
+        }
+        GPIOIntRegister(GPIO_PORTF_BASE, onButtonUp);   // Register our handler function for port F
+        GPIOIntTypeSet(GPIO_PORTF_BASE, GPIO_PIN_4, GPIO_RISING_EDGE);          // Configure PF4 for rising edge trigger
+        GPIOIntClear(GPIO_PORTF_BASE, GPIO_PIN_4);  // Clear interrupt flag
+    }
+}
+
+void onButtonUp(void) {
+    if (GPIOIntStatus(GPIO_PORTF_BASE, false) & GPIO_PIN_4) {
+        // PF4 was interrupt cause
+        // do nothing
+        GPIOIntRegister(GPIO_PORTF_BASE, onButtonDown); // Register our handler function for port F
+        GPIOIntTypeSet(GPIO_PORTF_BASE, GPIO_PIN_4, GPIO_FALLING_EDGE);         // Configure PF4 for falling edge trigger
+        GPIOIntClear(GPIO_PORTF_BASE, GPIO_PIN_4);  // Clear interrupt flag
+    }
+}
+
 
 /* main */
 int main(void){
@@ -25,11 +61,15 @@ int main(void){
   PortF_Init();
   count = 0;
 
-  SysTick_Init(80000);        // initialize SysTick timer
+  SysTick_Init(20000);        // initialize SysTick timer
   enable_interrupts();
-
+  // Interrupt setup
+   GPIOIntDisable(GPIO_PORTF_BASE, GPIO_PIN_4);        // Disable interrupt for PF4 (in case it was enabled)
+   GPIOIntClear(GPIO_PORTF_BASE, GPIO_PIN_4);      // Clear pending interrupts for PF4
+   GPIOIntRegister(GPIO_PORTF_BASE, onButtonDown);     // Register our handler function for port F
+   GPIOIntTypeSet(GPIO_PORTF_BASE, GPIO_PIN_4, GPIO_FALLING_EDGE);             // Configure PF4 for falling edge trigger
+   GPIOIntEnable(GPIO_PORTF_BASE, GPIO_PIN_4);     // Enable interrupt for PF4
   while(1){                   // interrupts every 1ms
-      wait_for_interrupts();
   }
 }
 
@@ -75,13 +115,10 @@ void wait_for_interrupts(void) {
 // Executed every 12.5ns*(period)
 void SysTick_Handler(void){
     count++;
-
-    if (count == (TOGGLE_COUNT-1)) {
-        count = 0;
-
-        Out = GPIO_PORTF_DATA_R & 0x04; // read PF2 to Out
-        Out ^= 0x04; // toggle bit at PF2
-        GPIO_PORTF_DATA_R = Out;
-
+    if (count == TOGGLE_COUNT-1) {
+            count = 0;
+            Out = GPIO_PORTF_DATA_R & 0x04; // Read PF1 to Out
+            Out ^= 0x04;
+            GPIO_PORTF_DATA_R = Out;
     }
 }
