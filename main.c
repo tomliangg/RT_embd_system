@@ -91,7 +91,7 @@ void SysTick_Handler(void){
     count++;
     if (count == TOGGLE_COUNT-1) {
         count = 0;
-        GPIO_PORTF_DATA_R &= 0xFD; // clear PF1
+        GPIO_PORTF_DATA_R &= ~0x02; // clear PF1
         GPIO_PORTF_DATA_R ^= 0x04; // toggle PF2
     }
 }
