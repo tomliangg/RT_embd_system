@@ -15,9 +15,8 @@ void disable_interrupts(void);
 void enable_interrupts(void);
 void wait_for_interrupts(void);
 
-volatile unsigned long count = 0;
-volatile unsigned long In, Out;
-unsigned long TOGGLE_COUNT = 1000 / 2;
+volatile unsigned long count;
+unsigned long TOGGLE_COUNT = 1000;
 
 /* main */
 int main(void){
@@ -79,9 +78,6 @@ void SysTick_Handler(void){
     if (count == (TOGGLE_COUNT-1)) {
         count = 0;
 
-        Out = GPIO_PORTF_DATA_R & 0x04; // read PF2 to Out
-        Out ^= 0x04; // toggle bit at PF2
-        GPIO_PORTF_DATA_R = Out;
-
+        GPIO_PORTF_DATA_R ^= 0x04; // toggle PF2
     }
 }
