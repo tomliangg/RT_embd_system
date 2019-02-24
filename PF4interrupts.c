@@ -17,6 +17,8 @@ void PF4_Init(void) {
     SYSCTL_RCGC2_R |= 0x00000020;           // activate clock for PortF
     while ((SYSCTL_PRGPIO_R & 0x00000020) == 0)
     {};                          // wait until PortF is ready
+    GPIO_PORTF_LOCK_R = 0x4C4F434B;         // unlock GPIO PortF
+    GPIO_PORTF_CR_R = 0x1F;                 // allow changes to PF4-0
     GPIO_PORTF_DIR_R &= ~0x10;              // make PF4 input
     GPIO_PORTF_AFSEL_R &= ~0x10;            // disable alt function on PF4
     GPIO_PORTF_DEN_R |= 0x10;               // enable digital I/O on PF4

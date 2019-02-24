@@ -79,7 +79,6 @@ void wait_for_interrupts(void) {
 
 void PF4_Handler(void) {
     GPIO_PORTF_ICR_R = 0x10;      // acknowledge flag4
-    GPIO_PORTF_DATA_R |= 0x02;
     ComparatorValue -= 1000;
     if (ComparatorValue < 0) ComparatorValue = 10000; // reload to 10000 if it's less than 0
     PWM1_1_CMPA_R = ComparatorValue - 1; // update comparatorA value
