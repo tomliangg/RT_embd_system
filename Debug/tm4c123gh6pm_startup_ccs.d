@@ -8,7 +8,6 @@ tm4c123gh6pm_startup_ccs.obj: C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.4.LTS/i
 tm4c123gh6pm_startup_ccs.obj: C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.4.LTS/include/machine/_types.h
 tm4c123gh6pm_startup_ccs.obj: C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.4.LTS/include/machine/_stdint.h
 tm4c123gh6pm_startup_ccs.obj: C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.4.LTS/include/sys/_stdint.h
-tm4c123gh6pm_startup_ccs.obj: ../PF4interrupts.h
 
 ../tm4c123gh6pm_startup_ccs.c: 
 C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.4.LTS/include/stdint.h: 
@@ -18,4 +17,3 @@ C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.4.LTS/include/sys/_types.h:
 C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.4.LTS/include/machine/_types.h: 
 C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.4.LTS/include/machine/_stdint.h: 
 C:/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.4.LTS/include/sys/_stdint.h: 
-../PF4interrupts.h: 

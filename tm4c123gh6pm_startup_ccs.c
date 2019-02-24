@@ -23,7 +23,6 @@
 //*****************************************************************************
 
 #include <stdint.h>
-#include "PF4interrupts.h"
 
 //*****************************************************************************
 //
@@ -34,6 +33,7 @@ void ResetISR(void);
 static void NmiSR(void);
 static void FaultISR(void);
 static void IntDefaultHandler(void);
+void PF4_Handler(void);
 
 //*****************************************************************************
 //
