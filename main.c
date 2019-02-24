@@ -1,52 +1,57 @@
 /*
  * Author: Tom Liang
- * Date: Feb 8, 2019
- * Objective: configure GPIO interrupt and SysTick interrupt.
- * Use SysTick_Handler() to blink the blue LED when SW1 is released.
- * When SW1 is pressed, GPIO handler should light up the red LED.
+ * Date: Feb 23, 2019
+ * Objective: produce a 100Hz PWM waveform with adjustable duty cycles.
+ * start with a zero duty cycle which is incremented by 10% each time when
+ * SW1 is pressed. When the duty cycle reaches 100% it should be reset to 0%.
+ * Use Module1 PWM0 (M1PWM2) and Module1 PWM1 (M1PWM3), where the IO pins to
+ * be assigned for these PWM outputs are PE4 and PE5, respectively.
  */
 
-#include "SysTickInts.h"
-#include "PLL.h"
 #include "tm4c123gh6pm.h"
 #include <stdint.h>
 #include <stdbool.h>
-#include "inc/hw_memmap.h"
-#include "driverlib/interrupt.h"
-#include "driverlib/gpio.h"
-#include "driverlib/sysctl.h"
-
 
 void PortF_Init(void);
+void PWM_Init(void);
 void disable_interrupts(void);
 void enable_interrupts(void);
 void wait_for_interrupts(void);
 
-volatile unsigned long count;
-volatile unsigned long In, Out;
-unsigned long TOGGLE_COUNT = 1000;
-void SysTick_Handler(void);
 void GPIO_Handler(void);
 
 
 /* main */
 int main(void){
-  PLL_Init();                 // bus clock at 80 MHz
   PortF_Init();
   count = 0;
 
-  SysTick_Init(80000);        // initialize SysTick timer
   enable_interrupts();
-  // Interrupt setup
-   GPIOIntDisable(GPIO_PORTF_BASE, GPIO_PIN_4);        // Disable interrupt for PF4 (in case it was enabled)
-   GPIOIntClear(GPIO_PORTF_BASE, GPIO_PIN_4);      // Clear pending interrupts for PF4
-   GPIOIntRegister(GPIO_PORTF_BASE, GPIO_Handler);     // Register our handler function for port F
-   GPIOIntTypeSet(GPIO_PORTF_BASE, GPIO_PIN_4, GPIO_LOW_LEVEL);             // Configure PF4 for falling edge trigger
-   GPIOIntEnable(GPIO_PORTF_BASE, GPIO_PIN_4);     // Enable interrupt for PF4
+
   while(1){                   // interrupts every 1ms
   }
 }
 
+void PWM_Init(void) {
+    SYSCTL_RCGC0_R |= 0x0010000;     // 1) enable PWM clock
+    SYSCTL_RCGC2_R |= 0x10;          // 2.1) activate clock for PortE
+    while ((SYSCTL_PRGPIO_R & 0x10) == 0) {}; // 2.2) wait until PortE is ready
+    GPIO_PORTE_AFSEL_R = 0x30;       // 3) enable alt function on PE5-4
+    GPIO_PORTE_PCTL_R &= 0x00FF0000; // 4.1) clear PE5-4 GPIOPCTL PMCx fields
+    GPIO_PORTE_PCTL_R |= 0x00550000; // 4.2) configure PE5-4 as PWM Module 1
+    SYSCTL_RCC_R |= 0x00100000;      // 5.1) configure PWM clock divider as the source for PWM clock
+    SYSCTL_RCC_R &= ~0x000E000;      // 5.2) clear PWMDIV
+    SYSCTL_RCC_R |= 0x00006000;      // 5.3) set divisor to 16 so PWM clock source is 1 MHz
+    PWM1_1_CTL_R = 0;                // 6.1) disable PWM while initializing; also configure Count-Down mode
+    PWM1_1_GENA_R = 0x8C;            // 6.2) drives pwmA HIGH when counter matches value in PWM1LOAD
+                                          // drive pwmA LOW when counter matches comparator A
+    PWM1_1_GENA_R = 0x8C;            // 6.3) drives pwmB HIGH when counter matches value in PWM1LOAD
+    PWM1_1_LOAD_R = 0x186A0 -1;      // 7) since target period is 100Hz, there are 100,000 clock ticks per period
+    PWM1_1_CMPA_R = 0x124F8 -1;      // 8) set 25% duty cycle to PE4
+    PWM1_1_CMPB_R = 0x061A8 -1;      // 9) set 75% duty cycle to PE5
+    PWM1_1_CTL_R = 0x01;             // 10) start the timers in PWM generator 1 by enabling the PWM clock
+    PWM1_ENABLE_R = 0x0C;            // 11) Enable M1PWM2 and M1PWM3
+}
 
 /* Initialize PortF GPIOs */
 void PortF_Init(void) {
@@ -84,19 +89,3 @@ void wait_for_interrupts(void) {
           "    BX     LR");
 }
 
-
-/* Interrupt service routine for SysTick Interrupt */
-// Executed every 12.5ns*(period)
-void SysTick_Handler(void){
-    count++;
-    if (count == TOGGLE_COUNT-1) {
-        count = 0;
-        GPIO_PORTF_DATA_R &= 0xFD; // clear PF1
-        GPIO_PORTF_DATA_R ^= 0x04; // toggle PF2
-    }
-}
-
-void GPIO_Handler(void) {
-    GPIO_PORTF_DATA_R = 0x02; // set PF1 to display red LED
-    GPIOIntClear(GPIO_PORTF_BASE, GPIO_PIN_4);  // Clear interrupt flag
-}
