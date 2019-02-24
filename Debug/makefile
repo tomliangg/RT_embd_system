@@ -10,8 +10,7 @@ GEN_OPTS__FLAG :=
 GEN_CMDS__FLAG := 
 
 ORDERED_OBJS += \
-"./PLL.obj" \
-"./SysTickInts.obj" \
+"./PF4interrupts.obj" \
 "./main.obj" \
 "./tm4c123gh6pm_startup_ccs.obj" \
 "../tm4c123gh6pm.cmd" \
@@ -158,8 +157,8 @@ MSE450.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "PLL.obj" "SysTickInts.obj" "main.obj" "tm4c123gh6pm_startup_ccs.obj" 
-	-$(RM) "PLL.d" "SysTickInts.d" "main.d" "tm4c123gh6pm_startup_ccs.d" 
+	-$(RM) "PF4interrupts.obj" "main.obj" "tm4c123gh6pm_startup_ccs.obj" 
+	-$(RM) "PF4interrupts.d" "main.d" "tm4c123gh6pm_startup_ccs.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 
