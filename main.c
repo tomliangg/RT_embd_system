@@ -13,13 +13,17 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+void disable_interrupts(void);
+void enable_interrupts(void);
+void wait_for_interrupts(void);
 
 void PWM_Init(void);
 void PF4_Init(void);
 void PF4_Handler(void);
-void disable_interrupts(void);
-void enable_interrupts(void);
-void wait_for_interrupts(void);
+
+void SysTick_Init(void);
+void SysTick_Wait(unsigned long delay);
+void SysTick_Wait10ms(unsigned long delay);
 
 volatile signed long ComparatorValue = 10000;
 
@@ -101,8 +105,30 @@ void wait_for_interrupts(void) {
 
 void PF4_Handler(void) {
     GPIO_PORTF_ICR_R = 0x10;      // acknowledge flag4
+    SysTick_Wait10ms(1);          // delay 10ms to debounce the switch
     ComparatorValue -= 1000;
     if (ComparatorValue < 0) ComparatorValue = 10000; // reload to 10000 if it's less than 0
     PWM1_1_CMPA_R = abs(ComparatorValue - 1); // update comparatorA value
     PWM1_1_CMPB_R = abs(ComparatorValue - 1); // update comparatorB value
+}
+
+void SysTick_Init(void){
+  NVIC_ST_CTRL_R = 0;               // disable SysTick during setup
+  NVIC_ST_CTRL_R = 0x00000005;      // enable SysTick with core clock
+}
+
+// The delay parameter is in units of the 80 MHz core clock. (12.5 ns)
+void SysTick_Wait(unsigned long delay){
+  NVIC_ST_RELOAD_R = delay-1;  // number of counts to wait
+  NVIC_ST_CURRENT_R = 0;       // any value written to CURRENT clears
+  while((NVIC_ST_CTRL_R&0x00010000)==0){ // wait for count flag
+  }
+}
+
+// 800000*12.5ns equals 10ms
+void SysTick_Wait10ms(unsigned long delay){
+  unsigned long i;
+  for(i=0; i<delay; i++){
+    SysTick_Wait(800000);  // wait 10ms
+  }
 }
