@@ -106,7 +106,7 @@ void wait_for_interrupts(void) {
 
 void PF4_Handler(void) {
     GPIO_PORTF_ICR_R = 0x10;      // acknowledge flag4
-    SysTick_Wait10ms(1);          // delay 10ms to debounce the switch and then recheck the switch status
+    SysTick_Wait10ms(1);          // debounce the switch: delay 10ms and then recheck the switch status
     if ((GPIO_PORTF_DATA_R & 0x10) == 0) {
         ComparatorValue -= 1000;
         if (ComparatorValue < 0) ComparatorValue = 10000; // reload to 10000 if it's less than 0
