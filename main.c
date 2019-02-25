@@ -120,7 +120,7 @@ void SysTick_Init(void){
   NVIC_ST_CTRL_R = 0x00000005;      // enable SysTick with core clock
 }
 
-// The delay parameter is in units of the 80 MHz core clock. (12.5 ns)
+// The delay parameter is in units of the 16 MHz core clock. (62.5 ns)
 void SysTick_Wait(unsigned long delay){
   NVIC_ST_RELOAD_R = delay-1;  // number of counts to wait
   NVIC_ST_CURRENT_R = 0;       // any value written to CURRENT clears
@@ -128,10 +128,10 @@ void SysTick_Wait(unsigned long delay){
   }
 }
 
-// 800000*12.5ns equals 10ms
+// 160000*62.5ns equals 10ms
 void SysTick_Wait10ms(unsigned long delay){
   unsigned long i;
   for(i=0; i<delay; i++){
-    SysTick_Wait(800000);  // wait 10ms
+    SysTick_Wait(160000);  // wait 10ms
   }
 }
