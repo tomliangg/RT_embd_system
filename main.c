@@ -29,6 +29,7 @@ volatile signed long ComparatorValue = 10000;
 
 /* main */
 int main(void){
+    SysTick_Init();
     PWM_Init();
     PF4_Init();
 
@@ -106,10 +107,12 @@ void wait_for_interrupts(void) {
 void PF4_Handler(void) {
     GPIO_PORTF_ICR_R = 0x10;      // acknowledge flag4
     SysTick_Wait10ms(1);          // delay 10ms to debounce the switch
-    ComparatorValue -= 1000;
-    if (ComparatorValue < 0) ComparatorValue = 10000; // reload to 10000 if it's less than 0
-    PWM1_1_CMPA_R = abs(ComparatorValue - 1); // update comparatorA value
-    PWM1_1_CMPB_R = abs(ComparatorValue - 1); // update comparatorB value
+    if ((GPIO_PORTF_DATA_R & 0x10) == 0) {
+        ComparatorValue -= 1000;
+        if (ComparatorValue < 0) ComparatorValue = 10000; // reload to 10000 if it's less than 0
+        PWM1_1_CMPA_R = abs(ComparatorValue - 1); // update comparatorA value
+        PWM1_1_CMPB_R = abs(ComparatorValue - 1); // update comparatorB value
+    }
 }
 
 void SysTick_Init(void){
