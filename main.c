@@ -11,7 +11,7 @@
 #include "tm4c123gh6pm.h"
 #include <stdint.h>
 #include <stdbool.h>
-#include "PLL.h"
+#include <stdlib.h>
 
 
 void PWM_Init(void);
@@ -25,9 +25,8 @@ volatile signed long ComparatorValue = 10000;
 
 /* main */
 int main(void){
-    PLL_Init();
+    PWM_Init();
     PF4_Init();
-    // PWM_Init();
     enable_interrupts();
 
     while(1){
@@ -74,9 +73,9 @@ void PWM_Init(void) {
                                           // drive pwmA LOW when counter matches comparator A
     PWM1_1_GENB_R = 0x80C;           // 6.3) drives pwmB HIGH when counter matches value in PWM1LOAD
                                           // drive pwmB LOW when counter matches comparator B
-    PWM1_1_LOAD_R = 10000 -1;        // 7) since target period is 100Hz, there are 10,000 clock ticks per period
-    PWM1_1_CMPA_R = 10000 -10;        // 8) set 0% duty cycle to PE4
-    PWM1_1_CMPB_R = 10000 -10;        // 9) set 0% duty cycle to PE5
+    PWM1_1_LOAD_R = 10001 -1;        // 7) since target period is 100Hz, there are 10,000 clock ticks per period
+    PWM1_1_CMPA_R = 10000 -1;        // 8) set 0% duty cycle to PE4
+    PWM1_1_CMPB_R = 10000 -1;        // 9) set 0% duty cycle to PE5
     PWM1_1_CTL_R |= 0x01;            // 10) start the timers in PWM generator 1 by enabling the PWM clock
     PWM1_ENABLE_R |= 0x0C;           // 11) Enable M1PWM2 and M1PWM3
 }
@@ -106,6 +105,6 @@ void PF4_Handler(void) {
     GPIO_PORTF_ICR_R = 0x10;      // acknowledge flag4
     ComparatorValue -= 1000;
     if (ComparatorValue < 0) ComparatorValue = 10000; // reload to 10000 if it's less than 0
-    PWM1_1_CMPA_R = ComparatorValue - 1; // update comparatorA value
-    PWM1_1_CMPB_R = ComparatorValue - 1; // update comparatorB value
+    PWM1_1_CMPA_R = abs(ComparatorValue - 1); // update comparatorA value
+    PWM1_1_CMPB_R = abs(ComparatorValue - 1); // update comparatorB value
 }
