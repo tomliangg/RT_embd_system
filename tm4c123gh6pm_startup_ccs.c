@@ -23,6 +23,7 @@
 //*****************************************************************************
 
 #include <stdint.h>
+#include "Sound.h"
 
 //*****************************************************************************
 //
@@ -33,7 +34,6 @@ void ResetISR(void);
 static void NmiSR(void);
 static void FaultISR(void);
 static void IntDefaultHandler(void);
-void PF4_Handler(void);
 
 //*****************************************************************************
 //
@@ -83,7 +83,7 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // Debug monitor handler
     0,                                      // Reserved
     IntDefaultHandler,                      // The PendSV handler
-    IntDefaultHandler,                      // The SysTick handler
+    SysTick_Handler,                      // The SysTick handler
     IntDefaultHandler,                      // GPIO Port A
     IntDefaultHandler,                      // GPIO Port B
     IntDefaultHandler,                      // GPIO Port C
@@ -114,7 +114,7 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // Analog Comparator 2
     IntDefaultHandler,                      // System Control (PLL, OSC, BO)
     IntDefaultHandler,                      // FLASH Control
-    PF4_Handler,                      // GPIO Port F
+    IntDefaultHandler,                      // GPIO Port F
     IntDefaultHandler,                      // GPIO Port G
     IntDefaultHandler,                      // GPIO Port H
     IntDefaultHandler,                      // UART2 Rx and Tx
