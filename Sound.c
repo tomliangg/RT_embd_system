@@ -3,7 +3,7 @@
 #include "Sound.h"
 #include "DAC.h"
 
-unsigned char Index;
+unsigned char index = 0;
 const unsigned char SineWave[16] = {4,5,6,7,8,9,10,11,12,11,10,9,8,7,6,5};
 unsigned long period=0x05;
 unsigned long SW_current;
@@ -16,7 +16,7 @@ unsigned long SW_old = 0;
 // Input: none
 // Output: none
 void Sound_Init(void) {
-	Index = 0;
+	index = 0;
 	NVIC_ST_CTRL_R = 0; // disable SysTick during setup
     NVIC_ST_RELOAD_R = period-1;// reload value
 	NVIC_ST_CURRENT_R = 0; // any write to current clears it
@@ -57,7 +57,10 @@ void SysTick_Handler(void) {
 		if (GPIO_PORTE_DATA_R & 0x08) Sound_Tone(80000000/(16*783.991)); //set note G pitch
 		Sound_Init();
 	}
-	Index = (Index+1)&0x0F; // 4,5,6,7,7,7,6,5,4,3,2,1,1,1,2,3...�
-	DAC_Out(SineWave[Index]); // output one value each interrupt
+	if (SW_current) {
+	    index = (index + 1) & 0x0F; // 4,5,6,7,7,7,6,5,4,3,2,1,1,1,2,3...�
+        DAC_Out(SineWave[index]); // output one value each interrupt
+	}
+	else if (!SW_current) Sound_Off();
 	SW_old = SW_current;
 }

@@ -1,33 +1,33 @@
 ******************************************************************************
                   TI ARM Linker PC v18.1.4                     
 ******************************************************************************
->> Linked Sat Mar 16 15:57:21 2019
+>> Linked Sat Mar 16 16:41:10 2019
 
 OUTPUT FILE NAME:   <MSE450.out>
-ENTRY POINT SYMBOL: "_c_int00_noargs"  address: 000006d9
+ENTRY POINT SYMBOL: "_c_int00_noargs"  address: 000006f1
 
 
 MEMORY CONFIGURATION
 
          name            origin    length      used     unused   attr    fill
 ----------------------  --------  ---------  --------  --------  ----  --------
-  FLASH                 00000000   00040000  000007b6  0003f84a  R  X
-  SRAM                  20000000   00008000  0000020d  00007df3  RW X
+  FLASH                 00000000   00040000  000007ce  0003f832  R  X
+  SRAM                  20000000   00008000  00000210  00007df0  RW X
 
 
 SEGMENT ALLOCATION MAP
 
 run origin  load origin   length   init length attrs members
 ----------  ----------- ---------- ----------- ----- -------
-00000000    00000000    000007b8   000007b8    r-x
+00000000    00000000    000007d0   000007d0    r-x
   00000000    00000000    0000026c   0000026c    r-- .intvecs
-  0000026c    0000026c    0000050a   0000050a    r-x .text
-  00000776    00000776    00000010   00000010    r-- .const
-  00000788    00000788    00000030   00000030    r-- .cinit
-20000000    20000000    0000020d   00000000    rw-
+  0000026c    0000026c    00000522   00000522    r-x .text
+  0000078e    0000078e    00000010   00000010    r-- .const
+  000007a0    000007a0    00000030   00000030    r-- .cinit
+20000000    20000000    00000210   00000000    rw-
   20000000    20000000    00000200   00000000    rw- .stack
-  20000200    20000200    00000008   00000000    rw- .data
-  20000208    20000208    00000005   00000000    rw- .bss
+  20000200    20000200    0000000c   00000000    rw- .data
+  2000020c    2000020c    00000004   00000000    rw- .bss
 
 
 SECTION ALLOCATION MAP
@@ -38,41 +38,39 @@ section   page    origin      length       input sections
 .intvecs   0    00000000    0000026c     
                   00000000    0000026c     tm4c123gh6pm_startup_ccs.obj (.intvecs)
 
-.text      0    0000026c    0000050a     
+.text      0    0000026c    00000522     
                   0000026c    00000124     Piano.obj (.text)
-                  00000390    00000100     Sound.obj (.text)
-                  00000490    0000009c     rtsv7M4_T_le_v4SPD16_eabi.lib : memcpy_t2.asm.obj (.text)
-                  0000052c    00000084     DAC.obj (.text)
-                  000005b0    0000007c     PLL.obj (.text)
-                  0000062c    00000068     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_decompress_lzss.c.obj (.text:decompress:lzss:__TI_decompress_lzss)
-                  00000694    00000044                                   : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit:__TI_auto_init_nobinit_nopinit)
-                  000006d8    00000038                                   : boot_cortex_m.c.obj (.text:_c_int00_noargs:_c_int00_noargs)
-                  00000710    00000032     main.obj (.text)
-                  00000742    00000012     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_zero_init.c.obj (.text:decompress:ZI:__TI_zero_init_nomemset:__TI_zero_init_nomemset)
-                  00000754    0000000e                                   : copy_decompress_none.c.obj (.text:decompress:none:__TI_decompress_none)
-                  00000762    0000000c     tm4c123gh6pm_startup_ccs.obj (.text)
-                  0000076e    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : pre_init.c.obj (.text:_system_pre_init)
-                  00000772    00000004                                   : exit.c.obj (.text:abort:abort)
+                  00000390    00000118     Sound.obj (.text)
+                  000004a8    0000009c     rtsv7M4_T_le_v4SPD16_eabi.lib : memcpy_t2.asm.obj (.text)
+                  00000544    00000084     DAC.obj (.text)
+                  000005c8    0000007c     PLL.obj (.text)
+                  00000644    00000068     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_decompress_lzss.c.obj (.text:decompress:lzss:__TI_decompress_lzss)
+                  000006ac    00000044                                   : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit:__TI_auto_init_nobinit_nopinit)
+                  000006f0    00000038                                   : boot_cortex_m.c.obj (.text:_c_int00_noargs:_c_int00_noargs)
+                  00000728    00000032     main.obj (.text)
+                  0000075a    00000012     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_zero_init.c.obj (.text:decompress:ZI:__TI_zero_init_nomemset:__TI_zero_init_nomemset)
+                  0000076c    0000000e                                   : copy_decompress_none.c.obj (.text:decompress:none:__TI_decompress_none)
+                  0000077a    0000000c     tm4c123gh6pm_startup_ccs.obj (.text)
+                  00000786    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : pre_init.c.obj (.text:_system_pre_init)
+                  0000078a    00000004                                   : exit.c.obj (.text:abort:abort)
 
-.const     0    00000776    00000010     
-                  00000776    00000010     Sound.obj (.const:.string:SineWave)
+.const     0    0000078e    00000010     
+                  0000078e    00000010     Sound.obj (.const:.string:SineWave)
 
-.cinit     0    00000788    00000030     
-                  00000788    0000000c     (__TI_handler_table)
-                  00000794    00000004     --HOLE-- [fill = 0]
-                  00000798    00000008     (.cinit..bss.load) [load image, compression = zero_init]
-                  000007a0    00000008     (.cinit..data.load) [load image, compression = lzss]
-                  000007a8    00000010     (__TI_cinit_table)
+.cinit     0    000007a0    00000030     
+                  000007a0    0000000c     (.cinit..data.load) [load image, compression = lzss]
+                  000007ac    0000000c     (__TI_handler_table)
+                  000007b8    00000008     (.cinit..bss.load) [load image, compression = zero_init]
+                  000007c0    00000010     (__TI_cinit_table)
 
 .init_array 
 *          0    00000000    00000000     UNINITIALIZED
 
-.data      0    20000200    00000008     UNINITIALIZED
-                  20000200    00000008     Sound.obj (.data)
+.data      0    20000200    0000000c     UNINITIALIZED
+                  20000200    0000000c     Sound.obj (.data)
 
-.bss       0    20000208    00000005     UNINITIALIZED
-                  20000208    00000004     (.common:SW_current)
-                  2000020c    00000001     (.common:Index)
+.bss       0    2000020c    00000004     UNINITIALIZED
+                  2000020c    00000004     (.common:SW_current)
 
 .stack     0    20000000    00000200     UNINITIALIZED
                   20000000    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : boot_cortex_m.c.obj (.stack)
@@ -84,13 +82,13 @@ MODULE SUMMARY
        ------                         ----   -------   -------
     .\
        tm4c123gh6pm_startup_ccs.obj   12     620       0      
+       Sound.obj                      280    16        16     
        Piano.obj                      292    0         0      
-       Sound.obj                      256    16        13     
        DAC.obj                        132    0         0      
        PLL.obj                        124    0         0      
        main.obj                       50     0         0      
     +--+------------------------------+------+---------+---------+
-       Total:                         866    636       13     
+       Total:                         890    636       16     
                                                               
     C:\ti\ccsv8\tools\compiler\ti-cgt-arm_18.1.4.LTS\lib\rtsv7M4_T_le_v4SPD16_eabi.lib
        memcpy_t2.asm.obj              156    0         0      
@@ -105,21 +103,21 @@ MODULE SUMMARY
        Total:                         424    0         0      
                                                               
        Stack:                         0      0         512    
-       Linker Generated:              0      44        0      
+       Linker Generated:              0      48        0      
     +--+------------------------------+------+---------+---------+
-       Grand Total:                   1290   680       525    
+       Grand Total:                   1314   684       528    
 
 
 LINKER GENERATED COPY TABLES
 
-__TI_cinit_table @ 000007a8 records: 2, size/record: 8, table size: 16
-	.bss: load addr=00000798, load size=00000008 bytes, run addr=20000208, run size=00000005 bytes, compression=zero_init
-	.data: load addr=000007a0, load size=00000008 bytes, run addr=20000200, run size=00000008 bytes, compression=lzss
+__TI_cinit_table @ 000007c0 records: 2, size/record: 8, table size: 16
+	.data: load addr=000007a0, load size=0000000c bytes, run addr=20000200, run size=0000000c bytes, compression=lzss
+	.bss: load addr=000007b8, load size=00000008 bytes, run addr=2000020c, run size=00000004 bytes, compression=zero_init
 
 
 LINKER GENERATED HANDLER TABLE
 
-__TI_handler_table @ 00000788 records: 3, size/record: 4, table size: 12
+__TI_handler_table @ 000007ac records: 3, size/record: 4, table size: 12
 	index: 0, handler: __TI_decompress_lzss
 	index: 1, handler: __TI_decompress_none
 	index: 2, handler: __TI_zero_init
@@ -129,55 +127,55 @@ GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name
 
 address   name                          
 -------   ----                          
-00000773  C$$EXIT                       
-0000052d  DAC_Init                      
-00000581  DAC_Out                       
-2000020c  Index                         
-000005b1  PLL_Init                      
+0000078b  C$$EXIT                       
+00000545  DAC_Init                      
+00000599  DAC_Out                       
+000005c9  PLL_Init                      
 000002c1  Piano_In                      
 0000026d  Piano_Init                    
-00000763  ResetISR                      
-20000208  SW_current                    
-20000204  SW_old                        
-00000776  SineWave                      
+0000077b  ResetISR                      
+2000020c  SW_current                    
+20000208  SW_old                        
+0000078e  SineWave                      
 00000391  Sound_Init                    
-000003d5  Sound_Off                     
-000003c5  Sound_Tone                    
-000003e1  SysTick_Handler               
+000003db  Sound_Off                     
+000003cb  Sound_Tone                    
+000003e7  SysTick_Handler               
 20000200  __STACK_END                   
 00000200  __STACK_SIZE                  
 20000200  __STACK_TOP                   
-000007a8  __TI_CINIT_Base               
-000007b8  __TI_CINIT_Limit              
-00000788  __TI_Handler_Table_Base       
-00000794  __TI_Handler_Table_Limit      
-00000695  __TI_auto_init_nobinit_nopinit
-0000062d  __TI_decompress_lzss          
-00000755  __TI_decompress_none          
+000007c0  __TI_CINIT_Base               
+000007d0  __TI_CINIT_Limit              
+000007ac  __TI_Handler_Table_Base       
+000007b8  __TI_Handler_Table_Limit      
+000006ad  __TI_auto_init_nobinit_nopinit
+00000645  __TI_decompress_lzss          
+0000076d  __TI_decompress_none          
 ffffffff  __TI_pprof_out_hndl           
 ffffffff  __TI_prof_data_size           
 ffffffff  __TI_prof_data_start          
 00000000  __TI_static_base__            
-00000743  __TI_zero_init_nomemset       
-00000491  __aeabi_memcpy                
-00000491  __aeabi_memcpy4               
-00000491  __aeabi_memcpy8               
+0000075b  __TI_zero_init_nomemset       
+000004a9  __aeabi_memcpy                
+000004a9  __aeabi_memcpy4               
+000004a9  __aeabi_memcpy8               
 ffffffff  __binit__                     
 ffffffff  __c_args__                    
 UNDEFED   __mpu_init                    
 20000000  __stack                       
-000006d9  _c_int00_noargs               
+000006f1  _c_int00_noargs               
 UNDEFED   _system_post_cinit            
-0000076f  _system_pre_init              
-00000773  abort                         
+00000787  _system_pre_init              
+0000078b  abort                         
 ffffffff  binit                         
-00000731  disable_interrupts            
-00000737  enable_interrupts             
+00000749  disable_interrupts            
+0000074f  enable_interrupts             
 00000000  g_pfnVectors                  
-00000711  main                          
-00000491  memcpy                        
-20000200  period                        
-0000073d  wait_for_interrupts           
+20000200  index                         
+00000729  main                          
+000004a9  memcpy                        
+20000204  period                        
+00000755  wait_for_interrupts           
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -190,41 +188,41 @@ address   name
 0000026d  Piano_Init                    
 000002c1  Piano_In                      
 00000391  Sound_Init                    
-000003c5  Sound_Tone                    
-000003d5  Sound_Off                     
-000003e1  SysTick_Handler               
-00000491  __aeabi_memcpy                
-00000491  __aeabi_memcpy4               
-00000491  __aeabi_memcpy8               
-00000491  memcpy                        
-0000052d  DAC_Init                      
-00000581  DAC_Out                       
-000005b1  PLL_Init                      
-0000062d  __TI_decompress_lzss          
-00000695  __TI_auto_init_nobinit_nopinit
-000006d9  _c_int00_noargs               
-00000711  main                          
-00000731  disable_interrupts            
-00000737  enable_interrupts             
-0000073d  wait_for_interrupts           
-00000743  __TI_zero_init_nomemset       
-00000755  __TI_decompress_none          
-00000763  ResetISR                      
-0000076f  _system_pre_init              
-00000773  C$$EXIT                       
-00000773  abort                         
-00000776  SineWave                      
-00000788  __TI_Handler_Table_Base       
-00000794  __TI_Handler_Table_Limit      
-000007a8  __TI_CINIT_Base               
-000007b8  __TI_CINIT_Limit              
+000003cb  Sound_Tone                    
+000003db  Sound_Off                     
+000003e7  SysTick_Handler               
+000004a9  __aeabi_memcpy                
+000004a9  __aeabi_memcpy4               
+000004a9  __aeabi_memcpy8               
+000004a9  memcpy                        
+00000545  DAC_Init                      
+00000599  DAC_Out                       
+000005c9  PLL_Init                      
+00000645  __TI_decompress_lzss          
+000006ad  __TI_auto_init_nobinit_nopinit
+000006f1  _c_int00_noargs               
+00000729  main                          
+00000749  disable_interrupts            
+0000074f  enable_interrupts             
+00000755  wait_for_interrupts           
+0000075b  __TI_zero_init_nomemset       
+0000076d  __TI_decompress_none          
+0000077b  ResetISR                      
+00000787  _system_pre_init              
+0000078b  C$$EXIT                       
+0000078b  abort                         
+0000078e  SineWave                      
+000007ac  __TI_Handler_Table_Base       
+000007b8  __TI_Handler_Table_Limit      
+000007c0  __TI_CINIT_Base               
+000007d0  __TI_CINIT_Limit              
 20000000  __stack                       
 20000200  __STACK_END                   
 20000200  __STACK_TOP                   
-20000200  period                        
-20000204  SW_old                        
-20000208  SW_current                    
-2000020c  Index                         
+20000200  index                         
+20000204  period                        
+20000208  SW_old                        
+2000020c  SW_current                    
 ffffffff  __TI_pprof_out_hndl           
 ffffffff  __TI_prof_data_size           
 ffffffff  __TI_prof_data_start          
