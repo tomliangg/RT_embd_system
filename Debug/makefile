@@ -12,6 +12,7 @@ GEN_CMDS__FLAG :=
 ORDERED_OBJS += \
 "./DAC.obj" \
 "./PLL.obj" \
+"./Piano.obj" \
 "./Sound.obj" \
 "./main.obj" \
 "./tm4c123gh6pm_startup_ccs.obj" \
@@ -159,8 +160,8 @@ MSE450.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "DAC.obj" "PLL.obj" "Sound.obj" "main.obj" "tm4c123gh6pm_startup_ccs.obj" 
-	-$(RM) "DAC.d" "PLL.d" "Sound.d" "main.d" "tm4c123gh6pm_startup_ccs.d" 
+	-$(RM) "DAC.obj" "PLL.obj" "Piano.obj" "Sound.obj" "main.obj" "tm4c123gh6pm_startup_ccs.obj" 
+	-$(RM) "DAC.d" "PLL.d" "Piano.d" "Sound.d" "main.d" "tm4c123gh6pm_startup_ccs.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

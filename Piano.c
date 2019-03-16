@@ -1,7 +1,8 @@
 // Port E bits 3-0 have 4 piano keys
 
-#include "Piano.h"
+#include <stdint.h>
 #include "tm4c123gh6pm.h"
+#include "Piano.h"
 
 
 // **************Piano_Init*********************
@@ -16,6 +17,7 @@ void Piano_Init(void){
     GPIO_PORTE_PCTL_R &= ~0x0000FFFF; // regular GPIO function
     GPIO_PORTE_DIR_R &= ~0x0F; // make PE3-0 in
     GPIO_PORTE_AFSEL_R &= ~0x0F; // disable alt funct on PE3-0
+    GPIO_PORTE_PDR_R |= 0x0F; // enable pulldown resistors on PE3-0
     GPIO_PORTE_DEN_R |= 0x0F; // enable digital I/O on PE3-0
 }
 

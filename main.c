@@ -13,7 +13,8 @@
 #include "tm4c123gh6pm.h"
 #include "DAC.h"
 #include "Sound.h"
-#include "PLC.h"
+#include "Piano.h"
+#include "PLL.h"
 
 void disable_interrupts(void);
 void enable_interrupts(void);
@@ -23,11 +24,12 @@ void wait_for_interrupts(void);
 
 /* main */
 int main(void){
-    disable_interrupts
-    PLL_Init();
-    Piano_Init();
-
-    enable_interrupts
+    disable_interrupts();
+    PLL_Init();         // 80MHz clock
+    DAC_Init();         // configure PB3-0 for DAC
+    Piano_Init();       // configure PE3-0 as input pins
+    Sound_Init();       // setup Systick interrupts
+    enable_interrupts();
 
     while(1){
         wait_for_interrupts();

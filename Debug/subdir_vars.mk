@@ -11,6 +11,7 @@ CMD_SRCS += \
 C_SRCS += \
 ../DAC.c \
 ../PLL.c \
+../Piano.c \
 ../Sound.c \
 ../main.c \
 ../tm4c123gh6pm_startup_ccs.c 
@@ -18,6 +19,7 @@ C_SRCS += \
 C_DEPS += \
 ./DAC.d \
 ./PLL.d \
+./Piano.d \
 ./Sound.d \
 ./main.d \
 ./tm4c123gh6pm_startup_ccs.d 
@@ -25,6 +27,7 @@ C_DEPS += \
 OBJS += \
 ./DAC.obj \
 ./PLL.obj \
+./Piano.obj \
 ./Sound.obj \
 ./main.obj \
 ./tm4c123gh6pm_startup_ccs.obj 
@@ -32,6 +35,7 @@ OBJS += \
 OBJS__QUOTED += \
 "DAC.obj" \
 "PLL.obj" \
+"Piano.obj" \
 "Sound.obj" \
 "main.obj" \
 "tm4c123gh6pm_startup_ccs.obj" 
@@ -39,6 +43,7 @@ OBJS__QUOTED += \
 C_DEPS__QUOTED += \
 "DAC.d" \
 "PLL.d" \
+"Piano.d" \
 "Sound.d" \
 "main.d" \
 "tm4c123gh6pm_startup_ccs.d" 
@@ -46,6 +51,7 @@ C_DEPS__QUOTED += \
 C_SRCS__QUOTED += \
 "../DAC.c" \
 "../PLL.c" \
+"../Piano.c" \
 "../Sound.c" \
 "../main.c" \
 "../tm4c123gh6pm_startup_ccs.c" 

@@ -16,7 +16,6 @@ unsigned long SW_old = 0;
 // Input: none
 // Output: none
 void Sound_Init(void) {
-	DAC_Init(); // Port B is DAC
 	Index = 0;
 	NVIC_ST_CTRL_R = 0; // disable SysTick during setup
     NVIC_ST_RELOAD_R = period-1;// reload value
