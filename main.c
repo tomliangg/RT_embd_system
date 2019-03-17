@@ -1,11 +1,11 @@
 /*
  * Author: Tom Liang
- * Date: Feb 23, 2019
- * Objective: produce a 100Hz PWM waveform with adjustable duty cycles.
- * start with a zero duty cycle which is incremented by 10% each time when
- * SW1 is pressed. When the duty cycle reaches 100% it should be reset to 0%.
- * Use Module1 PWM0 (M1PWM2) and Module1 PWM1 (M1PWM3), where the IO pins to
- * be assigned for these PWM outputs are PE4 and PE5, respectively.
+ * Date: March 16, 2019
+ * Objective: Build a 4-key digital piano with DAC, GPIO and Systick ISR.
+ * When PE0 is pressed, output note C.
+ * When PE1 is pressed, output note D.
+ * When PE2 is pressed, output note E.
+ * When PE3 is pressed, output note G.
  */
 
 #include <stdint.h>

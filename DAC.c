@@ -6,9 +6,7 @@
 
 
 // **************DAC_Init*********************
-// Initialize 4-bit DAC 
-// Input: none
-// Output: none
+// Initialize 4-bit DAC on PortB
 void DAC_Init(void) {
     unsigned long volatile delay;
 	SYSCTL_RCGC2_R |= 0x02;            // activate port B
@@ -25,7 +23,6 @@ void DAC_Init(void) {
 // **************DAC_Out*********************
 // output to DAC
 // Input: 4-bit data, 0 to 15 
-// Output: none
 void DAC_Out(unsigned long data) {
 	GPIO_PORTB_DATA_R = data;
 }

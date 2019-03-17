@@ -6,10 +6,8 @@
 
 
 // **************Piano_Init*********************
-// Initialize piano key inputs
-// Input: none
-// Output: none
-void Piano_Init(void){
+// Initialize piano key inputs on PortE
+void Piano_Init(void) {
     unsigned long volatile delay;
     SYSCTL_RCGC2_R |= 0x10;            // activate port E
     delay = SYSCTL_RCGC2_R;            // allow time to finish activating

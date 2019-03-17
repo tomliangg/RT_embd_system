@@ -12,9 +12,6 @@ unsigned char SW_prev;  // previous switch values for portE
 
 // **************Sound_Init*********************
 // Initialize Systick periodic interrupts
-// Also calls DAC_Init() to initialize DAC
-// Input: none
-// Output: none
 void Sound_Init(void) {
 	index = 0;
 	NVIC_ST_CTRL_R = 0;  // disable SysTick during setup
@@ -30,9 +27,6 @@ void Sound_Init(void) {
 //           Units of period are 12.5ns
 //           Maximum is 2^24-1
 //           Minimum is determined by length of ISR
-// Output: none
-
-
 void Sound_Tone(unsigned long period_local) {
 // this routine sets the RELOAD and starts SysTick
 	period = period_local;
@@ -41,7 +35,6 @@ void Sound_Tone(unsigned long period_local) {
 
 // **************Sound_Off*********************
 // stop outputing to DAC
-// Output: none
 void Sound_Off(void) {
  // this routine stops the sound output
 	GPIO_PORTB_DATA_R &= ~0x0F;
