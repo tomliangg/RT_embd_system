@@ -20,25 +20,3 @@ void Piano_Init(void){
     GPIO_PORTE_PDR_R |= 0x0F; // enable pulldown resistors on PE3-0
     GPIO_PORTE_DEN_R |= 0x0F; // enable digital I/O on PE3-0
 }
-
-// **************Piano_In*********************
-// Input from piano key inputs
-// Input: none
-// Output: 0 to 15 depending on keys
-// 0x01 is key 0 pressed, 0x02 is key 1 pressed,
-// 0x04 is key 2 pressed, 0x08 is key 3 pressed
-unsigned long Piano_In(void){
-    if (GPIO_PORTE_DATA_R & 0x01) GPIO_PORTB_DATA_R |= 0x01;
-    else if ((GPIO_PORTE_DATA_R & 0x01) != 1) GPIO_PORTB_DATA_R &= 0x01;
-
-    if (GPIO_PORTE_DATA_R & 0x02) GPIO_PORTB_DATA_R |= 0x02;
-    else if ((GPIO_PORTE_DATA_R & 0x02) != 1) GPIO_PORTB_DATA_R &= 0x02;
-
-    if (GPIO_PORTE_DATA_R & 0x04) GPIO_PORTB_DATA_R |= 0x04;
-    else if ((GPIO_PORTE_DATA_R & 0x04) != 1) GPIO_PORTB_DATA_R &= 0x04;
-
-    if (GPIO_PORTE_DATA_R & 0x08) GPIO_PORTB_DATA_R |= 0x08;
-    else if ((GPIO_PORTE_DATA_R & 0x08) != 1) GPIO_PORTB_DATA_R &= 0x08;
-
-    return GPIO_PORTB_DATA_R; //return the output corresponding to the input piano key
-}

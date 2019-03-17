@@ -6,8 +6,8 @@
 unsigned char index = 0;
 const unsigned char SineWave[16] = {4,5,6,7,8,9,10,11,12,11,10,9,8,7,6,5};
 unsigned long period=0x05;
-unsigned long SW_current;
-unsigned long SW_old = 0;
+unsigned char SW_current; // current switch values for portE
+unsigned char SW_prev; // previous switch values for portE
 
 
 // **************Sound_Init*********************
@@ -47,20 +47,19 @@ void Sound_Off(void) {
 
 
 // Interrupt service routine
-// Executed every 12.5ns*(period)
 void SysTick_Handler(void) {
-	SW_current = GPIO_PORTE_DATA_R&0x0F;
-	if (SW_current != SW_old) {
-		if (GPIO_PORTE_DATA_R & 0x01) Sound_Tone(80000000/(16*523.251)); //set note C pitch
-		if (GPIO_PORTE_DATA_R & 0x02) Sound_Tone(80000000/(16*587.330)); //set note D pitch
-		if (GPIO_PORTE_DATA_R & 0x04) Sound_Tone(80000000/(16*659.255)); //set note E pitch
-		if (GPIO_PORTE_DATA_R & 0x08) Sound_Tone(80000000/(16*783.991)); //set note G pitch
-		Sound_Init();
+	SW_current = GPIO_PORTE_DATA_R & 0x0F;  // read PortE into SW_current
+	if ((SW_current != SW_prev) && SW_current) {
+		if (GPIO_PORTE_DATA_R & 0x01) Sound_Tone(80000000/(16*523.251));  // set note C pitch
+		if (GPIO_PORTE_DATA_R & 0x02) Sound_Tone(80000000/(16*587.330));  // set note D pitch
+		if (GPIO_PORTE_DATA_R & 0x04) Sound_Tone(80000000/(16*659.255));  // set note E pitch
+		if (GPIO_PORTE_DATA_R & 0x08) Sound_Tone(80000000/(16*783.991));  // set note G pitch
+		Sound_Init();  //load the new frequency to ISR
 	}
 	if (SW_current) {
-	    index = (index + 1) & 0x0F; // 4,5,6,7,7,7,6,5,4,3,2,1,1,1,2,3...�
-        DAC_Out(SineWave[index]); // output one value each interrupt
+	    index = (index + 1) & 0x0F;  // 4,5,6,7,8,9,10,11,12,11,10,9,8,7,6,5...�
+        DAC_Out(SineWave[index]);  // output one value at each interrupt
 	}
 	else if (!SW_current) Sound_Off();
-	SW_old = SW_current;
+	SW_prev = SW_current;
 }
