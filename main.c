@@ -21,9 +21,8 @@ void enable_interrupts(void);
 void wait_for_interrupts(void);
 
 
-
 /* main */
-int main(void){
+int main(void) {
     disable_interrupts();
     PLL_Init();         // 80MHz clock
     DAC_Init();         // configure PB3-0 for DAC
@@ -31,7 +30,7 @@ int main(void){
     Sound_Init();       // setup Systick interrupts
     enable_interrupts();
 
-    while(1){
+    while(1) {
         wait_for_interrupts();
     }
 }

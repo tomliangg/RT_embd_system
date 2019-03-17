@@ -6,8 +6,8 @@
 unsigned char index = 0;
 const unsigned char SineWave[16] = {4,5,6,7,8,9,10,11,12,11,10,9,8,7,6,5};
 unsigned long period=0x05;
-unsigned char SW_current; // current switch values for portE
-unsigned char SW_prev; // previous switch values for portE
+unsigned char SW_current;  // current switch values for portE
+unsigned char SW_prev;  // previous switch values for portE
 
 
 // **************Sound_Init*********************
@@ -17,11 +17,11 @@ unsigned char SW_prev; // previous switch values for portE
 // Output: none
 void Sound_Init(void) {
 	index = 0;
-	NVIC_ST_CTRL_R = 0; // disable SysTick during setup
-    NVIC_ST_RELOAD_R = period-1;// reload value
-	NVIC_ST_CURRENT_R = 0; // any write to current clears it
-	NVIC_SYS_PRI3_R = (NVIC_SYS_PRI3_R&0x00FFFFFF)|0x20000000; //set priority to 1
-	NVIC_ST_CTRL_R = 0x0007; // enable,core clock, and interrupts
+	NVIC_ST_CTRL_R = 0;  // disable SysTick during setup
+    NVIC_ST_RELOAD_R = period-1;  // reload value
+	NVIC_ST_CURRENT_R = 0;  // any write to current clears it
+	NVIC_SYS_PRI3_R = (NVIC_SYS_PRI3_R&0x00FFFFFF)|0x20000000;  //set priority to 1
+	NVIC_ST_CTRL_R = 0x0007;  // enable,core clock, and interrupts
 }
 
 // **************Sound_Tone*********************
@@ -31,6 +31,8 @@ void Sound_Init(void) {
 //           Maximum is 2^24-1
 //           Minimum is determined by length of ISR
 // Output: none
+
+
 void Sound_Tone(unsigned long period_local) {
 // this routine sets the RELOAD and starts SysTick
 	period = period_local;
@@ -56,10 +58,11 @@ void SysTick_Handler(void) {
 		if (GPIO_PORTE_DATA_R & 0x08) Sound_Tone(80000000/(16*783.991));  // set note G pitch
 		Sound_Init();  //load the new frequency to ISR
 	}
+
 	if (SW_current) {
 	    index = (index + 1) & 0x0F;  // 4,5,6,7,8,9,10,11,12,11,10,9,8,7,6,5...�
         DAC_Out(SineWave[index]);  // output one value at each interrupt
-	}
-	else if (!SW_current) Sound_Off();
+	} else if (!SW_current) Sound_Off();
+
 	SW_prev = SW_current;
 }
