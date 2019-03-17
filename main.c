@@ -27,7 +27,7 @@ int main(void) {
     PLL_Init();         // 80MHz clock
     DAC_Init();         // configure PB3-0 for DAC
     Piano_Init();       // configure PE3-0 as input pins
-    Sound_Init();       // setup Systick interrupts
+    Sound_Init(100);    // setup Systick interrupts with 100Hz
     enable_interrupts();
 
     while(1) {
