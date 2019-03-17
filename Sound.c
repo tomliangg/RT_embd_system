@@ -13,12 +13,12 @@ unsigned char SW_prev;  // previous switch values for portE
 // **************Sound_Init*********************
 // Initialize Systick periodic interrupts
 void Sound_Init(void) {
-	index = 0;
-	NVIC_ST_CTRL_R = 0;  // disable SysTick during setup
+    index = 0;
+    NVIC_ST_CTRL_R = 0;  // disable SysTick during setup
     NVIC_ST_RELOAD_R = period-1;  // reload value
-	NVIC_ST_CURRENT_R = 0;  // any write to current clears it
-	NVIC_SYS_PRI3_R = (NVIC_SYS_PRI3_R&0x00FFFFFF)|0x20000000;  //set priority to 1
-	NVIC_ST_CTRL_R = 0x0007;  // enable,core clock, and interrupts
+    NVIC_ST_CURRENT_R = 0;  // any write to current clears it
+    NVIC_SYS_PRI3_R = (NVIC_SYS_PRI3_R&0x00FFFFFF)|0x20000000;  //set priority to 1
+    NVIC_ST_CTRL_R = 0x0007;  // enable,core clock, and interrupts
 }
 
 // **************Sound_Tone*********************
@@ -29,7 +29,7 @@ void Sound_Init(void) {
 //           Minimum is determined by length of ISR
 void Sound_Tone(unsigned long period_local) {
 // this routine sets the RELOAD and starts SysTick
-	period = period_local;
+    period = period_local;
 }
 
 
@@ -37,25 +37,25 @@ void Sound_Tone(unsigned long period_local) {
 // stop outputing to DAC
 void Sound_Off(void) {
  // this routine stops the sound output
-	GPIO_PORTB_DATA_R &= ~0x0F;
+    GPIO_PORTB_DATA_R &= ~0x0F;
 }
 
 
 // Interrupt service routine
 void SysTick_Handler(void) {
-	SW_current = GPIO_PORTE_DATA_R & 0x0F;  // read PortE into SW_current
-	if ((SW_current != SW_prev) && SW_current) {
-		if (GPIO_PORTE_DATA_R & 0x01) Sound_Tone(80000000/(16*523.251));  // set note C pitch
-		if (GPIO_PORTE_DATA_R & 0x02) Sound_Tone(80000000/(16*587.330));  // set note D pitch
-		if (GPIO_PORTE_DATA_R & 0x04) Sound_Tone(80000000/(16*659.255));  // set note E pitch
-		if (GPIO_PORTE_DATA_R & 0x08) Sound_Tone(80000000/(16*783.991));  // set note G pitch
-		Sound_Init();  //load the new frequency to ISR
-	}
+    SW_current = GPIO_PORTE_DATA_R & 0x0F;  // read PortE into SW_current
+    if ((SW_current != SW_prev) && SW_current) {
+        if (GPIO_PORTE_DATA_R & 0x01) Sound_Tone(80000000/(16*523.251));  // set note C pitch
+        if (GPIO_PORTE_DATA_R & 0x02) Sound_Tone(80000000/(16*587.330));  // set note D pitch
+        if (GPIO_PORTE_DATA_R & 0x04) Sound_Tone(80000000/(16*659.255));  // set note E pitch
+        if (GPIO_PORTE_DATA_R & 0x08) Sound_Tone(80000000/(16*783.991));  // set note G pitch
+        Sound_Init();  //load the new frequency to ISR
+    }
 
-	if (SW_current) {
-	    index = (index + 1) & 0x0F;  // 4,5,6,7,8,9,10,11,12,11,10,9,8,7,6,5...�
+    if (SW_current) {
+        index = (index + 1) & 0x0F;  // 4,5,6,7,8,9,10,11,12,11,10,9,8,7,6,5...�
         DAC_Out(SineWave[index]);  // output one value at each interrupt
-	} else if (!SW_current) Sound_Off();
+    } else if (!SW_current) Sound_Off();
 
-	SW_prev = SW_current;
+    SW_prev = SW_current;
 }
